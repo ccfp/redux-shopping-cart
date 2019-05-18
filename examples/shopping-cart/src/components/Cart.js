@@ -1,39 +1,47 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Product from './Product'
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import Product from './Product';
 
-const Cart  = ({ products, total, onCheckoutClicked }) => {
-  const hasProducts = products.length > 0
+const Cart = ({ products, total, onCheckoutClicked, onRemoveClicked }) => {
+  const hasProducts = products.length > 0;
   const nodes = hasProducts ? (
-    products.map(product =>
-      <Product
-        title={product.title}
-        price={product.price}
-        quantity={product.quantity}
-        key={product.id}
-      />
-    )
+    products.map(product => (
+      <Fragment key={product.id}>
+        <Product
+          title={product.title}
+          price={product.price}
+          quantity={product.quantity}
+        />
+        <button onClick={() => onRemoveClicked(product.id)}>Remove</button>
+      </Fragment>
+    ))
   ) : (
     <em>Please add some products to cart.</em>
-  )
+  );
 
   return (
     <div>
       <h3>Your Cart</h3>
       <div>{nodes}</div>
-      <p>Total: &#36;{total}</p>
-      <button onClick={onCheckoutClicked}
-        disabled={hasProducts ? '' : 'disabled'}>
+      <p>
+        Total: &#36;
+        {total}
+      </p>
+      <button
+        onClick={onCheckoutClicked}
+        disabled={hasProducts ? '' : 'disabled'}
+      >
         Checkout
       </button>
     </div>
-  )
-}
+  );
+};
 
 Cart.propTypes = {
   products: PropTypes.array,
   total: PropTypes.string,
-  onCheckoutClicked: PropTypes.func
-}
+  onCheckoutClicked: PropTypes.func,
+  onRemovedClicked: PropTypes.func
+};
 
-export default Cart
+export default Cart;
