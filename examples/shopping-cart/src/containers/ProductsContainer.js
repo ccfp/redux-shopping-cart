@@ -6,14 +6,14 @@ import { getVisibleProducts } from '../reducers/products';
 import ProductItem from '../components/ProductItem';
 import ProductsList from '../components/ProductsList';
 
-const ProductsContainer = ({ products, dispatch }) => (
+const ProductsContainer = ({ products, addAllToCart, addToCart }) => (
   <ProductsList title="Products">
     {products.map(product => (
       <ProductItem
         key={product.id}
         product={product}
-        onAddToCartClicked={() => dispatch(addToCart(product.id))}
-        onAddAllToCartClicked={() => dispatch(addAllToCart(product.id))}
+        onAddToCartClicked={() => addToCart(product.id)}
+        onAddAllToCartClicked={() => addAllToCart(product.id)}
       />
     ))}
   </ProductsList>
@@ -36,4 +36,7 @@ const mapStateToProps = state => ({
   products: getVisibleProducts(state.products)
 });
 
-export default connect(mapStateToProps)(ProductsContainer);
+export default connect(
+  mapStateToProps,
+  { addAllToCart, addToCart }
+)(ProductsContainer);

@@ -2,11 +2,18 @@ import { combineReducers } from 'redux';
 import {
   RECEIVE_PRODUCTS,
   ADD_TO_CART,
-  ADD_ALL_TO_CART
+  ADD_ALL_TO_CART,
+  REMOVE_FROM_CART,
+  EMPTY_CART
 } from '../constants/ActionTypes';
 
 const products = (state, action) => {
   switch (action.type) {
+    case REMOVE_FROM_CART:
+      return {
+        ...state,
+        inventory: state.inventory + 1
+      };
     case ADD_TO_CART:
       return {
         ...state,
@@ -17,6 +24,7 @@ const products = (state, action) => {
         ...state,
         inventory: 0
       };
+
     default:
       return state;
   }
@@ -32,6 +40,19 @@ const byId = (state = {}, action) => {
           return obj;
         }, {})
       };
+
+    case EMPTY_CART:
+      return {
+        ...state,
+        ...Object.entries(action.cart.quantityById).reduce((obj, [id, amt]) => {
+          obj[id] = {
+            ...state[id],
+            inventory: (state[id].inventory || 0) + amt
+          };
+          return obj;
+        }, {})
+      };
+
     default:
       const { productId } = action;
       if (productId) {

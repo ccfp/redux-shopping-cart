@@ -2,7 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Product from './Product';
 
-const Cart = ({ products, total, onCheckoutClicked, onRemoveClicked }) => {
+const Cart = ({
+  products,
+  total,
+  onCheckoutClicked,
+  onRemoveClicked,
+  onEmptyCartClicked
+}) => {
   const hasProducts = products.length > 0;
   const nodes = hasProducts ? (
     products.map(product => (
@@ -33,6 +39,12 @@ const Cart = ({ products, total, onCheckoutClicked, onRemoveClicked }) => {
       >
         Checkout
       </button>
+      <button
+        onClick={onEmptyCartClicked}
+        disabled={hasProducts ? '' : 'disabled'}
+      >
+        Empty cart
+      </button>
     </div>
   );
 };
@@ -41,7 +53,8 @@ Cart.propTypes = {
   products: PropTypes.array,
   total: PropTypes.string,
   onCheckoutClicked: PropTypes.func,
-  onRemovedClicked: PropTypes.func
+  onRemoveClicked: PropTypes.func,
+  onEmptyCartClicked: PropTypes.func
 };
 
 export default Cart;

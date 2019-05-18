@@ -29,10 +29,23 @@ export const addToCart = productId => (dispatch, getState) => {
   }
 };
 
-export const removeFromCart = productId => ({
-  type: types.REMOVE_FROM_CART,
-  productId
-});
+export const removeFromCart = productId => (dispatch, getState) => {
+  const remainingAmount = getState().cart.quantityById[productId] - 1;
+  dispatch({
+    type: types.REMOVE_FROM_CART,
+    productId,
+    remainingAmount
+  });
+};
+
+export const emptyCart = products => (dispatch, getState) => {
+  const { cart } = getState();
+  dispatch({
+    type: types.EMPTY_CART,
+    products,
+    cart
+  });
+};
 
 export const addAllToCart = productId => (dispatch, getState) => {
   const remaingAmount = getState().products.byId[productId].inventory;
@@ -43,6 +56,9 @@ export const addAllToCart = productId => (dispatch, getState) => {
 
 export const checkout = products => (dispatch, getState) => {
   const { cart } = getState();
+
+  console.log(products);
+  console.log(cart);
 
   dispatch({
     type: types.CHECKOUT_REQUEST
